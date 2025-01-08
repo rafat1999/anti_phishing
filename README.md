@@ -45,6 +45,7 @@ The system will run in demo mode, allowing you to check URLs against common phis
    ```
 3. Run the system:
    ```bash
+   pipx ensurepath
    anti-phishing
    ```
 
