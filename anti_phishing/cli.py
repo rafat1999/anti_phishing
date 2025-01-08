@@ -10,21 +10,19 @@ async def main_loop(system: FirebaseAntiPhishing) -> None:
     while True:
         print("\n=== Student Anti-Phishing System ===")
         student_id = input("Enter student ID (or 'quit' to exit): ")
-
         if student_id.lower() == 'quit':
             break
-
         password = input("Enter password: ")
         success, message = await system.login(student_id, password)
         print(f"\n{message}")
-
+        
         if success:
             while True:
                 print("\n1. Check URL")
                 print("2. View My Check History")
                 print("3. Logout")
                 choice = input("Enter your choice (1-3): ")
-
+                
                 if choice == '3':
                     system.current_user = None
                     break
@@ -44,21 +42,22 @@ async def main_loop(system: FirebaseAntiPhishing) -> None:
 
 def main():
     """Entry point for the application"""
-    # Apply nest_asyncio to allow async operations
     nest_asyncio.apply()
-
     print_banner()
-
-    # Check for Firebase credentials
+    
+    # Try to connect to Firebase using environment variable
     cred_path = os.getenv('FIREBASE_CREDENTIALS')
     if cred_path and os.path.exists(cred_path):
         db_manager = DatabaseManager(cred_path)
         system = FirebaseAntiPhishing(db_manager)
-        print("Connected to Firebase database")
+        print("\nConnected to Firebase database")
     else:
         system = FirebaseAntiPhishing()
-        print("Running in demo mode (no database connection)")
-
+        print("\nRunning in Demo Mode")
+        print("Use these credentials to login:")
+        print("Student ID: DEMO001")
+        print("Password: demo123")
+    
     try:
         asyncio.run(main_loop(system))
     except KeyboardInterrupt:
