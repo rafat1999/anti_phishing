@@ -13,33 +13,73 @@ class FirebaseAntiPhishing:
         self.db = database_manager
         self.current_user = None
         self.max_login_attempts = 3
+        
+        # Demo mode credentials
+        self.demo_users = {
+            'DEMO001': {
+                'password_hash': hashlib.sha256('demo123'.encode()).hexdigest(),
+                'first_name': 'Demo',
+                'last_name': 'User',
+                'email': 'demo@example.com',
+                'department': 'Computer Science',
+                'account_locked': False,
+                'failed_login_attempts': 0
+            }
+        }
 
     async def login(self, student_id: str, password: str) -> Tuple[bool, str]:
         """Authenticate student and manage login attempts"""
-        if not self.db:
-            return False, "System is in demo mode - no database connection"
-
         try:
-            student_data = await self.db.get_student(student_id)
-            if not student_data:
-                return False, "Invalid student ID"
-
-            if student_data.get('account_locked'):
-                return False, "Account is locked. Please contact administrator."
-
-            password_hash = hashlib.sha256(password.encode()).hexdigest()
-
-            if student_data['password_hash'] == password_hash:
-                await self.db.update_login_success(student_id)
-                self.current_user = student_data
-                return True, "Login successful"
-
-            # Handle failed login
-            result = await self.db.update_login_failure(student_id, self.max_login_attempts)
-            return False, result
+            # Try Firebase authentication if database is available
+            if self.db:
+                return await self._firebase_login(student_id, password)
+            
+            # Fall back to demo mode authentication
+            return await self._demo_login(student_id, password)
 
         except Exception as e:
             return False, f"An error occurred during login: {str(e)}"
+
+    async def _demo_login(self, student_id: str, password: str) -> Tuple[bool, str]:
+        """Handle login in demo mode"""
+        if student_id not in self.demo_users:
+            return False, "Demo Mode: Use DEMO001 as student ID and demo123 as password"
+
+        user = self.demo_users[student_id]
+        if user['account_locked']:
+            return False, "Account is locked. Please try again later."
+
+        password_hash = hashlib.sha256(password.encode()).hexdigest()
+        if password_hash == user['password_hash']:
+            self.current_user = user.copy()  # Create a copy to avoid modifying the original
+            self.current_user['student_id'] = student_id
+            user['failed_login_attempts'] = 0
+            return True, "Login successful (Demo Mode)"
+
+        user['failed_login_attempts'] += 1
+        if user['failed_login_attempts'] >= self.max_login_attempts:
+            user['account_locked'] = True
+            return False, "Account locked due to too many failed attempts"
+
+        return False, f"Invalid credentials. {self.max_login_attempts - user['failed_login_attempts']} attempts remaining"
+
+    async def _firebase_login(self, student_id: str, password: str) -> Tuple[bool, str]:
+        """Handle login with Firebase"""
+        student_data = await self.db.get_student(student_id)
+        if not student_data:
+            return False, "Invalid student ID"
+
+        if student_data.get('account_locked'):
+            return False, "Account is locked. Please contact administrator."
+
+        password_hash = hashlib.sha256(password.encode()).hexdigest()
+        if student_data['password_hash'] == password_hash:
+            await self.db.update_login_success(student_id)
+            self.current_user = student_data
+            return True, "Login successful"
+
+        result = await self.db.update_login_failure(student_id, self.max_login_attempts)
+        return False, result
 
     async def check_url(self, url: str) -> Tuple[Optional[bool], str]:
         """Check if URL is potentially malicious"""
