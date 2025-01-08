@@ -14,6 +14,14 @@ A Python package for educational institutions to protect students from phishing 
 
 ```bash
 pip install anti-phishing
+
+or
+
+# Install pipx if not already installed
+sudo apt install pipx
+
+# Install the package using pipx
+pipx install git+https://github.com/rafat1999/anti_phishing.git
 ```
 
 ## Usage
