@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="anti-phishing",
-    version="1.0.0",
+    version="1.0.1",
     packages=find_packages(),
     install_requires=[
         "colorama>=0.4.6",
