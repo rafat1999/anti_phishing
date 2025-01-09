@@ -31,6 +31,7 @@ pipx install git+https://github.com/rafat1999/anti_phishing.git
 Simply run the command:
 
 ```bash
+pipx ensurepath
 anti-phishing
 ```
 
