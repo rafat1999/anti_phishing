@@ -16,12 +16,12 @@ class FirebaseAntiPhishing:
         
         # Demo mode credentials
         self.demo_users = {
-            'DEMO001': {
-                'password_hash': hashlib.sha256('demo123'.encode()).hexdigest(),
-                'first_name': 'Demo',
-                'last_name': 'User',
-                'email': 'demo@example.com',
-                'department': 'Computer Science',
+            'Students': {
+                'password_hash': hashlib.sha256('#citi@students'.encode()).hexdigest(),
+                'first_name': 'CITI',
+                'last_name': 'Students',
+                'email': 'rafat@gmail.com',
+                'department': 'Cyber Security',
                 'account_locked': False,
                 'failed_login_attempts': 0
             }
