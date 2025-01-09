@@ -39,8 +39,8 @@ def print_banner() -> None:
                                     ██║     ██║   ██║   ██║
                                     ██║     ██║   ██║   ██║
                                     ╚██████╗██║   ██║   ██║
-                                     ╚═════╝╚═╝   ╚═╝   ╚═╝    {Fore.RED}{Style.BRIGHT} v 1.0.1 
-                                                                                       Developed By Cyber Team of Creative IT Institute{Style.RESET_ALL}
+                                     ╚═════╝╚═╝   ╚═╝   ╚═╝       v 1.0.1 
+                                                                        Developed By Cyber Team of Creative IT Institute
 """
     banner = """
                                     🔒 Anti-Phishing Detection System 🔒
