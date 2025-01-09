@@ -43,7 +43,7 @@ class FirebaseAntiPhishing:
     async def _demo_login(self, student_id: str, password: str) -> Tuple[bool, str]:
         """Handle login in demo mode"""
         if student_id not in self.demo_users:
-            return False, "Demo Mode: Use DEMO001 as student ID and demo123 as password"
+            return False, "Demo Mode: Please Contuct Your Mentor For User ID"
 
         user = self.demo_users[student_id]
         if user['account_locked']:
