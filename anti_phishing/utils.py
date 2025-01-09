@@ -42,7 +42,7 @@ def print_banner() -> None:
                             ██║     ██║   ██║   ██║
                             ██║     ██║   ██║   ██║
                             ╚██████╗██║   ██║   ██║
-                             ╚═════╝╚═╝   ╚═╝   ╚═╝
+                             ╚═════╝╚═╝   ╚═╝   ╚═╝    {Fore.RED}{Style.BRIGHT} v 1.0.1 {Style.RESET_ALL}
 """
     banner = """
                                     🔒 Anti-Phishing Detection System 🔒
@@ -50,6 +50,8 @@ def print_banner() -> None:
                                     Protecting students from online threats
     """
     print(Fore.RED + hacker_face + Fore.GREEN + banner)
+
+
 def normalize_url(url: str) -> str:
     """Normalize URL for consistent checking"""
     url = url.lower().strip()
