@@ -40,7 +40,7 @@ def print_banner() -> None:
                                     ██║     ██║   ██║   ██║
                                     ╚██████╗██║   ██║   ██║
                                      ╚═════╝╚═╝   ╚═╝   ╚═╝       v 1.0.1 
-                                                                        Developed By Cyber Team of Creative IT Institute
+                                                                        Developed By Cyber Team of Creative IT Institute (S.H. RAFAT)
 """
     banner = """
                                     🔒 Anti-Phishing Detection System 🔒
